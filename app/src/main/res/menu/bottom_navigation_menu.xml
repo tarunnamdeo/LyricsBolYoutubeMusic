@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/lyrics"
+        android:icon="@drawable/ic_lyricicon"
+        android:title="LyricsBol"
+         />
+    <item
+        android:id="@+id/youtube"
+        android:icon="@drawable/ic_youtube"
+        android:title="Youtube"
+         />
+    <item
+        android:id="@+id/tarunapp"
+        android:icon="@drawable/ic_mobile_app"
+        android:title="TarunApp"
+        />
+</menu>
