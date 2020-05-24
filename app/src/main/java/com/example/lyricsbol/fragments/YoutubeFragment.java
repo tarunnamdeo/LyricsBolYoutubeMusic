@@ -34,6 +34,10 @@ import com.example.lyricsbol.R;
 import com.example.lyricsbol.adapter.VideoPostAdapter;
 import com.example.lyricsbol.interfaces.OnItemClickListener;
 import com.example.lyricsbol.interfaces.YoutubeDataModel;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -48,6 +52,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,11 +80,20 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
     private ArrayList<YoutubeDataModel> mListData = new ArrayList<>();
     Context mContext;
 
+    public static int ITEM_PER_ADD=8;
+    private static final String BANNER_ADD_ID="ca-app-pub-3940256099942544/6300978111";
+
+//    private static final String BANNER_ADD_ID="ca-app-pub-8622490339945284/4865292917";
+
+    private List<Object> recyclerItem=new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         setHasOptionsMenu(true);
+
+        MobileAds.initialize(getContext() ,BANNER_ADD_ID);
 
     }
 
@@ -110,12 +125,19 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
             @Override
             public void onClick(View v) {
                 buttonclickgo();
+                //banner
+//                getBannerAds();
+//                loadBannerAds();
+
+
             }
         });
 
 
-        //  new RequestYoutubeAPI().execute();
 
+
+        //  new RequestYoutubeAPI().execute();
+        getBannerAds();
         return view;
 
     }
@@ -176,7 +198,7 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
-        });
+        },recyclerItem);
         mList_videos.setAdapter(adapter);
     }
 
@@ -309,6 +331,8 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
                     JSONObject jsonObject = new JSONObject(response);
                     Log.e("response", jsonObject.toString());
                     mListData = parseVideoListFromResponse(jsonObject);
+//                    recyclerItem= Collections.singletonList(parseVideoListFromResponse(jsonObject));
+
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -357,6 +381,7 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
                                 youtube.setThumbnail(thumbnail);
                                 youtube.setVideo_id(video_id);
                                 mListData.add(youtube);
+                                recyclerItem.add(youtube);
 
 
                             }
@@ -372,11 +397,44 @@ public class YoutubeFragment extends Fragment implements SearchView.OnQueryTextL
 
 
 
-//    private void getBannerAds(){
-//         for (int i=0;i<mListData.size();i++){
-//
-//         }
-//    }
+    private void getBannerAds(){
+//         for (int i=0;i<20;i+=ITEM_PER_ADD){
+        try {
 
+            if (recyclerItem != null) {
+                for (int i = 0; i <= recyclerItem.size(); i += ITEM_PER_ADD) {
+//                ITEM_PER_ADD+=1;
+//                Log.d("sukusuku",String.valueOf(ITEM_PER_ADD+" ss "+recyclerItem.size()+" sds "+mListData.size()));
+                    AdView adView = new AdView(mContext);
+                    adView.setAdSize(AdSize.BANNER);
+                    adView.setAdUnitId(BANNER_ADD_ID);
+                    recyclerItem.add(adView);
+                }
+                loadBannerAds();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private void loadBannerAds(){
+        for (int i=0;i<recyclerItem.size();i++) {
+//            Log.d("sixww", String.valueOf(recyclerItem.size()));
+
+            Object item = recyclerItem.get(i);
+
+            if (item instanceof AdView){
+                final AdView adView=(AdView)item;
+                adView.loadAd(new AdRequest.Builder().build());
+            }
+        }
+    }
+
+
+    private void getvideospost(){
+        int count=0;
+
+    }
 
 }

@@ -17,6 +17,7 @@ import com.example.lyricsbol.fragments.Lyricsbol;
 import com.example.lyricsbol.fragments.TarunApp;
 import com.example.lyricsbol.fragments.YoutubeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.startapp.sdk.adsbase.StartAppSDK;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StartAppSDK.init(this, "204542869", false);
         setContentView(R.layout.activity_main);
         haveStoragePermission();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

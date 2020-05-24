@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.lyricsbol.R;
 import com.example.lyricsbol.Utilitys;
+import com.example.lyricsbol.VideoPlayActivity;
 import com.example.lyricsbol.interfaces.YoutubeDataModel;
 import com.example.lyricsbol.lib.VideoMeta;
 import com.example.lyricsbol.lib.YouTubeExtractor;
@@ -378,6 +379,7 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                         filename = videoTitle + "." + ytfile.getFormat().getExt();
                     }
                     filename = filename.replaceAll("[\\\\><\"|*?%:#/]", "");
+                    Log.d("urldownloadsong",ytfile.getUrl());
                     mydownloadFromUrl(ytfile.getUrl(), videoTitle, filename);
                     // finish();
                 }
@@ -451,10 +453,10 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     }
 
     public void playVideo(View view) {
-//        Intent intent = new Intent(getActivity(), VideoPlayActivity.class);
-//        intent.putExtra("videoid", youtubeDataModel.getVideo_id());
-//        Log.d("kkk", youtubeDataModel.getVideo_id());
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), VideoPlayActivity.class);
+        intent.putExtra("videoid", youtubeLink);
+        Log.d("kkk", youtubeDataModel.getVideo_id());
+        startActivity(intent);
     }
 
 
