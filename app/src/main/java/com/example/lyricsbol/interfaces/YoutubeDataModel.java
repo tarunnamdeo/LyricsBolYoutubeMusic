@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 
 public class YoutubeDataModel implements Parcelable {
-    private String title="";
-    private String description="";
-    private String publishedAt="";
-    private String thumbnail="";
+    private String title = "";
+    private String description = "";
+    private String publishedAt = "";
+    private String thumbnail = "";
     private String video_id = "";
 
     public String getVideo_id() {

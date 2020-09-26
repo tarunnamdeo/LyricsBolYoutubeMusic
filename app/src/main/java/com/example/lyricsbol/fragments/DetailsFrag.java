@@ -85,18 +85,15 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     private Downloadereciver downloadereciver;
 
 
-    //for secondextraction
     SparseArray<YtFile> ytFileSec = new SparseArray<>();
 
     public DetailsFrag() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
@@ -113,8 +110,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
 
         youtubeDataModel = getArguments().getParcelable(YoutubeDataModel.class.toString());
-        //.getIntent().getParcelableExtra(YoutubeDataModel.class.toString());
-        Log.e("hhaaaaa", youtubeDataModel.getDescription());
 
         youtubeLink = ("https://www.youtube.com/watch?v=" + youtubeDataModel.getVideo_id());
 
@@ -154,7 +149,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
         return view;
     }
-    // create Reciever
 
     @Override
     public void onPause() {
@@ -236,13 +230,10 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
 
     public void PlayAudio1(View view) {
-        //get url to download
         final String videoID = youtubeDataModel.getTitle();
         String link = ("https://www.youtube.com/watch?v=" + youtubeDataModel.getVideo_id());
-        // Toast.makeText(this, "Wait a second", Toast.LENGTH_SHORT).show();
         mainProgressBar.setVisibility(View.VISIBLE);
 
-        // Check how it was started and if we can get the youtube link
         if (view == null && Intent.ACTION_SEND.equals(getActivity().getIntent().getAction())
                 && getActivity().getIntent().getType() != null && "text/plain".equals(getActivity().getIntent().getType())) {
 
@@ -276,20 +267,15 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                     mainProgressBar.setVisibility(View.GONE);
 
                     if (ytFiles == null) {
-                        // Something went wrong we got no urls. Always check this.
-//                        getActivity().finish();
                         Toast.makeText(getContext(), "No Url Found Try another Video", Toast.LENGTH_SHORT).show();
                         mainProgressBar.setVisibility(View.VISIBLE);
                         secondextraction();
                         return;
                     }
-                    // Iterate over itags
                     for (int i = 0, itag; i < ytFiles.size(); i++) {
                         itag = ytFiles.keyAt(i);
-                        // ytFile represents one file with its url and meta data
                         YtFile ytFile = ytFiles.get(itag);
 
-                        // Just add videos in a decent format => height -1 = audio
                         if (ytFile.getFormat().getHeight() == -1 || ytFile.getFormat().getHeight() >= 360) {
                             myaddButtonToMainLayout(vMeta.getTitle(), ytFile);
                         }
@@ -302,7 +288,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     }
 
     private void secondextraction() {
-        Toast.makeText(getContext(), "Extracting", Toast.LENGTH_LONG).show();
 
         new YoutubeStreamExtractor(new YoutubeStreamExtractor.ExtractorListner() {
             @Override
@@ -315,7 +300,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                 mainProgressBar.setVisibility(View.GONE);
                 for (YTMedia media : adativeStream) {
                     if (media.isVideo()) {
-                        Log.d("video3", String.valueOf(media.getItag()));
                     } else {
 
                         YtFile newFile = new YtFile(YouTubeFormate.FORMAT_MAP.get(media.getItag()), media.getUrl());
@@ -325,15 +309,10 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                     }
                 }
 
-                // for audio
-
-                // Iterate over itags
                 for (int i = 0, itag; i < ytFileSec.size(); i++) {
                     itag = ytFileSec.keyAt(i);
-                    // ytFile represents one file with its url and meta data
                     YtFile ytFile = ytFileSec.get(itag);
 
-                    // Just add videos in a decent format => height -1 = audio
                     if (ytFile.getFormat().getHeight() == -1 || ytFile.getFormat().getHeight() >= 360) {
                         myaddButtonToMainLayout(meta.getTitle(), ytFile);
                     }
@@ -347,7 +326,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     }
 
     private void myaddButtonToMainLayout(final String videoTitle, final YtFile ytfile) {
-        // Display some buttons and let the user choose the format
 
         String btnText;
         if (ytfile.getFormat().getAudioBitrate() != -1) {
@@ -379,9 +357,8 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                         filename = videoTitle + "." + ytfile.getFormat().getExt();
                     }
                     filename = filename.replaceAll("[\\\\><\"|*?%:#/]", "");
-                    Log.d("urldownloadsong",ytfile.getUrl());
+                    Log.d("urldownloadsong", ytfile.getUrl());
                     mydownloadFromUrl(ytfile.getUrl(), videoTitle, filename);
-                    // finish();
                 }
             });
             mainLayout.addView(btn);
@@ -392,7 +369,7 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
         bundle.putString("urlmy", url);
-// set MyFragment Arguments
+        bundle.putString("title",videoTitle);
         Player myObj = new Player();
         myObj.setArguments(bundle);
         fragmentManager.beginTransaction()
@@ -405,12 +382,10 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_left_header:
-//                Toast.makeText(getContext(), "ksk", Toast.LENGTH_SHORT).show();
                 back_btn_pressed(view);
                 break;
             case R.id.imageplay:
                 playVideo(view);
-//                Toast.makeText(getContext(), "play", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.plauy:
                 PlayAudio1(view);
@@ -447,27 +422,21 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
         getFragmentManager().popBackStack();
 
-//        getActivity().finish();
-//        getFragmentManager().popBackStack();
-//        Toast.makeText(getContext(), "Back", Toast.LENGTH_SHORT).show();
     }
 
     public void playVideo(View view) {
         Intent intent = new Intent(getActivity(), VideoPlayActivity.class);
-        intent.putExtra("videoid", youtubeLink);
+        intent.putExtra("videoid", youtubeDataModel.getVideo_id());
         Log.d("kkk", youtubeDataModel.getVideo_id());
         startActivity(intent);
     }
 
 
     public void downloadvideo(View view) {
-        //get url to download
         final String videoID = youtubeDataModel.getTitle();
         String link = ("https://www.youtube.com/watch?v=" + youtubeDataModel.getVideo_id());
-        // Toast.makeText(this, "Wait a second", Toast.LENGTH_SHORT).show();
         mainProgressBar.setVisibility(View.VISIBLE);
 
-        // Check how it was started and if we can get the youtube link
         if (view == null && Intent.ACTION_SEND.equals(getActivity().getIntent().getAction())
                 && getActivity().getIntent().getType() != null && "text/plain".equals(getActivity().getIntent().getType())) {
 
@@ -476,7 +445,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
             if (ytLink != null
                     && (ytLink.contains("://youtu.be/") || ytLink.contains("youtube.com/watch?v="))) {
                 youtubeLink = ytLink;
-                // We have a valid link
                 getYoutubeDownloadUrl(youtubeLink);
             } else {
                 Toast.makeText(getContext(), "Erorrrrr", Toast.LENGTH_LONG).show();
@@ -518,7 +486,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
 
     private void addButtonToMainLayout(final String videoTitle, final YtFragmentedVideo ytFrVideo) {
-        // Display some buttons and let the user choose the format
         String btnText;
         if (ytFrVideo.height == -1) {
             btnText = "Audio " + ytFrVideo.audioFile.getFormat().getAudioBitrate() + " kbit/s";
@@ -546,21 +513,15 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
 
                     downloadIds += new RequestDownloadVideoStream().execute(ytFrVideo.videoFile.getUrl(), filename + "." + ytFrVideo.videoFile.getFormat().getExt());
-                    //    downloadIds += downloadFromUrl(ytFrVideo.videoFile.getUrl(), videoTitle,
-                    //        filename + "." + ytFrVideo.videoFile.getFormat().getExt(), false);
-                    //downloadIds += "-";
                     hideAudioDownloadNotification = true;
                 }
                 if (ytFrVideo.audioFile != null) {
 
                     downloadIds += new RequestDownloadVideoStream().execute(ytFrVideo.audioFile.getUrl(), filename + "." + ytFrVideo.audioFile.getFormat().getExt());
-                    // downloadIds += downloadFromUrl(ytFrVideo.audioFile.getUrl(), videoTitle,
-                    //       filename + "." + ytFrVideo.audioFile.getFormat().getExt(), hideAudioDownloadNotification);
 
                 }
                 if (ytFrVideo.audioFile != null)
                     cacheDownloadIds(downloadIds);
-                // finish();
             }
         });
         mainLayout.addView(btn);
@@ -591,18 +552,13 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                 mainProgressBar.setVisibility(View.GONE);
 
                 if (ytFiles == null) {
-                    // Something went wrong we got no urls. Always check this.
-//                    getActivity().finish();
                     Toast.makeText(getContext(), "Not Found For This Video", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // Iterate over itags
                 for (int i = 0, itag; i < ytFiles.size(); i++) {
                     itag = ytFiles.keyAt(i);
-                    // ytFile represents one file with its url and meta data
                     YtFile ytFile = ytFiles.get(itag);
 
-                    // Just add videos in a decent format => height -1 = audio
                     if (ytFile.getFormat().getHeight() == -1 || ytFile.getFormat().getHeight() >= 360) {
                         addButtonToMainLayout(vMeta.getTitle(), ytFile);
                     }
@@ -612,7 +568,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
     }
 
     private void addButtonToMainLayout(final String videoTitle, final YtFile ytfile) {
-        // Display some buttons and let the user choose the format
         String btnText = (ytfile.getFormat().getHeight() == -1) ? "Audio " +
                 ytfile.getFormat().getAudioBitrate() + " kbit/s" :
                 ytfile.getFormat().getHeight() + "p";
@@ -633,7 +588,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                 filename = filename.replaceAll("[\\\\><\"|*?%:#/]", "");
                 downloadFromUrl(ytfile.getUrl(), videoTitle, filename);
                 Toast.makeText(getContext(), "Download Start See in Notification Bar ", Toast.LENGTH_SHORT).show();
-//                getActivity().finish();
             }
         });
         mainLayout.addView(btn);
@@ -662,7 +616,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
 
         @Override
         protected String doInBackground(String... params) {
-            //now download it like a file
             InputStream is = null;
             URL u = null;
             int len1 = 0;
@@ -680,7 +633,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                 Log.d("size", fileSizeInMB + "MB");
                 filr = new DecimalFormat("#.##").format(fileSizeInMB);
                 if (huc != null) {
-                    //     Log.d("sizez",String.valueOf(filr)+"MB");
                     String file_name = params[1] + ".mp4";
                     String storagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/YoutubeVideos";
 
@@ -695,8 +647,6 @@ public class DetailsFrag extends Fragment implements View.OnClickListener {
                     if (is != null) {
                         while ((len1 = is.read(buffer)) != -1) {
                             total += len1;
-                            // publishing the progress....
-                            // After this onProgressUpdate will be called
                             progress = (total * 100) / size;
                             if (progress >= 0) {
                                 temp_progress = progress;

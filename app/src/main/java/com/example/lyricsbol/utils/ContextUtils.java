@@ -5,22 +5,20 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.widget.Toast;
 
-public class ContextUtils 
-{
-	public static Context context;
-	public static void init(Context c){
-		context=c;
-	}
-	public static  void CopytoClip(String x){
+public class ContextUtils {
+    public static Context context;
 
-        ((ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", x));
+    public static void init(Context c) {
+        context = c;
+    }
 
-		Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show(); 
+    public static void CopytoClip(String x) {
 
+        ((ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", x));
 
-
+        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
 
 
-	}
-	
+    }
+
 }

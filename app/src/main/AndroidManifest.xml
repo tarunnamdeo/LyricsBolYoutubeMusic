@@ -26,14 +26,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
+                    android:value="ca-app-pub-8622490339945284~5440007981" />
         <!--        orignal-->
-        <!--            android:value="ca-app-pub-8622490339945284~5440007981"/>-->
-
-
-        <activity android:name=".VideoPlayActivity" />
+        <!--        android:value="ca-app-pub-3940256099942544~3347511713"            />-->
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation">
@@ -44,6 +40,9 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".VideoPlayActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -62,5 +61,6 @@
             tools:node="remove" />
 
     </application>
+
 
 </manifest>

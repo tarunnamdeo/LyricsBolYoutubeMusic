@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -88,28 +87,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (!handled) {
-                super.onBackPressed();
-            }
+            super.onBackPressed();
+        }
 
     }
 
 
-
-    public  boolean haveStoragePermission() {
+    public boolean haveStoragePermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.e("Permission error","You have permission");
+                Log.e("Permission error", "You have permission");
                 return true;
             } else {
 
-                Log.e("Permission error","You have asked for permission");
+                Log.e("Permission error", "You have asked for permission");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else { //you dont need to worry about these stuff below api level 23
-            Log.e("Permission error","You already have the permission");
+        } else { //you dont need to worry about these stuff below api level 23
+            Log.e("Permission error", "You already have the permission");
             return true;
         }
     }

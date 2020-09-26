@@ -48,6 +48,7 @@ public class Utilitys {
             }
         }
     }
+
     public static void scanFile(String path, Context con) {
         File file = new File(path);
         Intent scanFileIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file));
@@ -179,8 +180,7 @@ public class Utilitys {
     }
 
 
-
-       public static void convertM4a(String inFilePath, String title, String artist) {
+    public static void convertM4a(String inFilePath, String title, String artist) {
         String path = inFilePath.substring(0, inFilePath.lastIndexOf("/"));
         try {
             Movie inAudio = MovieCreator.build(inFilePath);

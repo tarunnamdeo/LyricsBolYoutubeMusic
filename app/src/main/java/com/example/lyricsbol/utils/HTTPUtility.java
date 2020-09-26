@@ -7,12 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-public class HTTPUtility 
-{
-	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
+public class HTTPUtility {
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
 
-	
-	public static String downloadPageSource(String stringURL,Map<String,String> headers) throws IOException {
+
+    public static String downloadPageSource(String stringURL, Map<String, String> headers) throws IOException {
 
         URL url;
         HttpURLConnection conn;
@@ -23,25 +22,25 @@ public class HTTPUtility
 
             url = new URL(stringURL);
             conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestProperty("User-Agent",USER_AGENT);
-			
+            conn.setRequestProperty("User-Agent", USER_AGENT);
+
         } catch (IOException ex) {
 
             throw ex;
 
         }
 
-		
-		for (Map.Entry<String, String> entry : headers.entrySet()) {
-			conn.setRequestProperty(entry.getKey(),entry.getValue());
-		}
+
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            conn.setRequestProperty(entry.getKey(), entry.getValue());
+        }
 
         try {
 
             String line;
 
             conn.setRequestMethod("GET");
-			  BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             while ((line = in.readLine()) != null)
                 source.append(line);
 
@@ -59,9 +58,9 @@ public class HTTPUtility
         return source.toString();
 
     }
-	
-	
-	public static String downloadPageSource(String stringURL) throws IOException {
+
+
+    public static String downloadPageSource(String stringURL) throws IOException {
 
         URL url;
 
@@ -75,7 +74,7 @@ public class HTTPUtility
             url = new URL(stringURL);
 
             conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestProperty("User-Agent",USER_AGENT);
+            conn.setRequestProperty("User-Agent", USER_AGENT);
         } catch (IOException ex) {
 
             throw ex;
@@ -109,5 +108,5 @@ public class HTTPUtility
         return source.toString();
 
     }
-	
+
 }
